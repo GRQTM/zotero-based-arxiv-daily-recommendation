@@ -17,6 +17,7 @@ KEY_FILE="${ROOT_DIR}/.zotero_api_key"
 USER_ID_FILE="${ROOT_DIR}/.zotero_user_id"
 PROFILE_FILE="${ROOT_DIR}/context/zotero_recommendation_profile.md"
 PROFILE_TEMPLATE_FILE="${ROOT_DIR}/templates/zotero_recommendation_profile.sample.md"
+MODEL_REASONING_EFFORT="${MODEL_REASONING_EFFORT:-high}"
 
 usage() {
   cat <<'EOF'
@@ -47,6 +48,17 @@ if [[ $# -eq 1 ]]; then
       ;;
   esac
 fi
+
+MODEL_REASONING_EFFORT="$(printf '%s' "${MODEL_REASONING_EFFORT}" | tr '[:upper:]' '[:lower:]')"
+case "${MODEL_REASONING_EFFORT}" in
+  low|medium|high)
+    ;;
+  *)
+    echo "Error: invalid MODEL_REASONING_EFFORT='${MODEL_REASONING_EFFORT}'."
+    echo "Use one of: low, medium, high."
+    exit 1
+    ;;
+esac
 
 if [[ -z "${CODEX_BIN}" || ! -x "${CODEX_BIN}" ]]; then
   echo "Error: codex binary not found."
@@ -95,7 +107,7 @@ EOF
 
   echo "[2/4] Building Zotero-based recommendation profile..."
   env -u ZOTERO_API_KEY "${CODEX_BIN}" exec --full-auto --skip-git-repo-check --cd "${ROOT_DIR}" \
-    -c model_reasoning_effort=\"high\" \
+    -c "model_reasoning_effort=\"${MODEL_REASONING_EFFORT}\"" \
     - \
     < "${ROOT_DIR}/prompts/01_build_zotero_profile.prompt.md" \
     | tee "${ROOT_DIR}/logs/profile_run.log"
@@ -129,7 +141,7 @@ else
   echo "[2/2] Running recommendation prompt..."
 fi
 env -u ZOTERO_API_KEY "${CODEX_BIN}" exec --full-auto --skip-git-repo-check --cd "${ROOT_DIR}" \
-  -c model_reasoning_effort=\"high\" \
+  -c "model_reasoning_effort=\"${MODEL_REASONING_EFFORT}\"" \
   - \
   < "${ROOT_DIR}/prompts/02_recommend_astro_ph_last2days.prompt.md" \
   | tee "${ROOT_DIR}/logs/recommend_run.log"
