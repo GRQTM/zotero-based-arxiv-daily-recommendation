@@ -1,4 +1,4 @@
-# Zotero-Based arXiv Paper Recommendation
+# Zotero-based Arxiv Daily Recommendation
 
 This project recommends 5 recent `astro-ph` papers based on your profile.
 It is designed so that you can run it with one command.
@@ -23,8 +23,8 @@ If no personal profile exists yet, the script auto-initializes a default profile
 
 ## Git Start (If You Use Git)
 ```bash
-git clone https://github.com/GRQTM/Zotero-based-arxiv-paper-recommendation.git
-cd Zotero-based-arxiv-paper-recommendation
+git clone https://github.com/GRQTM/zotero-based-arxiv-daily-recommendation.git
+cd zotero-based-arxiv-daily-recommendation
 ./start
 ```
 
