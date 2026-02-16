@@ -1,0 +1,4 @@
+# Paste your Zotero API key on the first line (no quotes).
+# Then run:
+#   cp .zotero_api_key.example .zotero_api_key
+#   chmod 600 .zotero_api_key

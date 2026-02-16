@@ -61,6 +61,15 @@ if [[ -z "${USER_ID}" && -f "${USER_ID_FILE}" ]]; then
 fi
 
 if [[ "${REFRESH_PROFILE}" -eq 1 ]]; then
+  if [[ -z "${API_KEY}" && ! -f "${KEY_FILE}" ]]; then
+    cat > "${KEY_FILE}" <<'EOF'
+# Paste your Zotero API key on the first line (no quotes).
+EOF
+    chmod 600 "${KEY_FILE}" || true
+    echo "Created ${KEY_FILE} template."
+    echo "Please paste your Zotero API key into that file, then run ./start -r again."
+    exit 1
+  fi
   if [[ -z "${API_KEY}" && -f "${KEY_FILE}" ]]; then
     chmod 600 "${KEY_FILE}" || true
     API_KEY="$(tr -d '[:space:]' < "${KEY_FILE}")"

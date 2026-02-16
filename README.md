@@ -39,8 +39,14 @@ cd zotero-based-arxiv-daily-recommendation
 ## Personalized Mode (Optional)
 If you want recommendations based on your own Zotero library:
 
-1. Create a file named `.zotero_api_key` in the project root.
-2. Put your Zotero API key in that file.
+1. Create your key file from the example:
+
+```bash
+cp .zotero_api_key.example .zotero_api_key
+chmod 600 .zotero_api_key
+```
+
+2. Open `.zotero_api_key` and paste your Zotero API key on the first line.
 3. Run:
 
 ```bash
@@ -49,6 +55,9 @@ If you want recommendations based on your own Zotero library:
 
 Optional:
 - Add `.zotero_user_id` file (or set `ZOTERO_USER_ID`) to skip key lookup API call.
+
+Note:
+- If you run `./start -r` without any key file, the script auto-creates `.zotero_api_key` template and exits with instructions.
 
 ## Typical Daily Usage
 1. First time personalized setup: `./start -r`
